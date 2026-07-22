@@ -1,0 +1,23 @@
+---
+# INSTALL
+# =======
+mariadb_install_state: present
+mariadb_install_apt:
+- mariadb-server
+- python3-mysqldb
+- mariadb-client
+- mariadb-client-compat
+
+# CONFIG
+# ======
+mariadb_root_pw:
+
+mariadb_users:
+# - name: admin
+#   pw: 
+#   priv: "nextcloud.*:ALL"
+#   state: present
+
+mariadb_databases:
+# - name: "nextcloud"
+#   state: present

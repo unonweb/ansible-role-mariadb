@@ -1,0 +1,29 @@
+---
+# remove test db
+- name: Remove the test database
+  ansible.mysql.mysql_db:
+    name: test
+    login_user: root
+    login_password: "{{ mariadb_root_pw }}"
+    state: absent
+
+- when: mariadb_databases | length > 0
+  block:
+
+  # assert
+  - name: Assertions for mariadb_databases
+    loop: "{{ mariadb_databases }}"
+    ansible.builtin.assert:
+      that:
+      - item.name != None
+
+  # create databases
+  - name: Create databases
+    loop: "{{ mariadb_databases }}"
+    loop_control:
+      loop_var: __mariadb_db
+    ansible.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ mariadb_root_pw }}"
+      name: "{{ __mariadb_db.name }}"
+      state: "{{ __mariadb_db.state | default('present') }}"

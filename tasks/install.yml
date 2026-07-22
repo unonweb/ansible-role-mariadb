@@ -1,0 +1,14 @@
+---
+# present
+- when: mariadb_install_state == "present"
+  name: Apt install {{ mariadb_install_apt }}
+  ansible.builtin.apt:
+    state: present
+    name: "{{ mariadb_install_apt }}"
+
+# absent
+- when: mariadb_install_state == "absent"
+  name: Apt remove {{ mariadb_install_apt }}
+  ansible.builtin.apt:
+    state: absent
+    name: "{{ mariadb_install_apt }}"

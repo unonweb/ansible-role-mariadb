@@ -1,0 +1,50 @@
+---
+- name: mariadb role
+  tags:
+    - mariadb
+  block:
+
+  # assert
+  - name: Assertions for mariadb role
+    ansible.builtin.assert:
+      that:
+      - mariadb_root_pw != None
+
+  # install
+  - ansible.builtin.import_tasks: install.yml
+
+  # service
+  - name: Ensure MariaDB service is started and enabled
+    ansible.builtin.systemd_service:
+      name: mariadb.service
+      state: started
+      enabled: true
+
+  # root pw
+  - name: Set MariaDB root password
+    ansible.mysql.mysql_user:
+      name: root
+      password: "{{ mariadb_root_pw }}"
+      login_user: root
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+      check_implicit_admin: true
+      state: present
+
+  # disallow remote root login
+  - name: Disallow root login remotely
+    loop:
+    - "{{ ansible_hostname }}"
+    - "127.0.0.1"
+    - "::1"
+    ansible.mysql.mysql_user:
+      name: root
+      host: "{{ item }}"
+      login_user: root
+      login_password: "{{ mariadb_root_pw }}"
+      state: absent
+
+  # mysql databases
+  - ansible.builtin.import_tasks: mysql-databases.yml
+
+  # mysql users
+  - ansible.builtin.import_tasks: mysql-users.yml

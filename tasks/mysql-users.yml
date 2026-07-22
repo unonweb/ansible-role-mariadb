@@ -1,0 +1,36 @@
+---
+# remove anonymous
+- name: Remove anonymous database users
+  ansible.mysql.mysql_user:
+    name: ""
+    host_all: true
+    login_user: root
+    login_password: "{{ mariadb_root_pw }}"
+    state: absent
+
+- when: mariadb_users | length > 0
+  block:
+
+  # assert
+  - name: Assertions for mariadb_databases
+    loop: "{{ mariadb_databases }}"
+    ansible.builtin.assert:
+      that:
+      - item.name != None
+      - item.pw != None
+      - item.priv != None
+
+  # create users
+  - name: Create users and grant privileges
+    loop: "{{ mariadb_users }}"
+    loop_control:
+      loop_var: __mariadb_user
+    no_log: true
+    ansible.mysql.mysql_user:
+      login_user: root
+      login_password: "{{ mariadb_root_pw }}"
+      name: "{{ __mariadb_user.name }}"
+      password: "{{ __mariadb_user.pw }}"
+      host: localhost
+      priv: "{{ __mariadb_user.priv }}"
+      state: "{{ __mariadb_user.state | default('present') }}"
