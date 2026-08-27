@@ -12,8 +12,8 @@
   block:
 
   # assert
-  - name: Assertions for mariadb_databases
-    loop: "{{ mariadb_databases }}"
+  - name: Assertions for mariadb_users
+    loop: "{{ mariadb_users }}"
     ansible.builtin.assert:
       that:
       - item.name != None
