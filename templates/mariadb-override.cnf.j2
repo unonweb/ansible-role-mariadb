@@ -1,0 +1,16 @@
+{# Managed by Ansible. Do not edit manually. #}
+{% for section, options in item.config.items() %}
+[{{ section }}]
+{% for option, value in options.items() %}
+{% if value is sameas true %}
+{{ option }}
+{% elif value is sameas false %}
+# {{ option }} disabled
+{% elif value is none %}
+# {{ option }} unset
+{% else %}
+{{ option }} = {{ value }}
+{% endif %}
+{% endfor %}
+
+{% endfor %}

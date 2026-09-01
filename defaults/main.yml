@@ -11,6 +11,9 @@ mariadb_install_apt:
 # CONFIG
 # ======
 mariadb_root_pw:
+mariadb_config_overrides:
+  mysqld:
+    datadir: /var/lib/mysql
 
 mariadb_users:
 # - name: admin

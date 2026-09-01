@@ -1,0 +1,25 @@
+---
+- tags: [mariadb-config]
+  block:
+
+  # assert
+  - name: Assertions for mariadb_config_overrides
+    ansible.builtin.assert:
+    loop: "{{ mariadb_config_overrides }}"
+    that:
+    - item.path is defined
+    - item.config is defined
+
+  # template
+  - name: Template override files
+    loop: "{{ mariadb_config_overrides }}"
+      loop_control:
+        label: "{{ item.path }}"
+    ansible.builtin.template:
+      src: mariadb-override.cnf.j2
+      dest: "{{ item.path }}"
+      owner: root
+      group: root
+      mode: "0644"
+      validate: "mariadbd --defaults-extra-file=%s --validate-config"
+    notify: systemctl reload mariadb.service
