@@ -15,12 +15,12 @@ mariadb_config_overrides:
   mysqld:
     datadir: /var/lib/mysql
 
-mariadb_users:
+mariadb_users: []
 # - name: admin
 #   pw: 
 #   priv: "nextcloud.*:ALL"
 #   state: present
 
-mariadb_databases:
+mariadb_databases: []
 # - name: "nextcloud"
 #   state: present
