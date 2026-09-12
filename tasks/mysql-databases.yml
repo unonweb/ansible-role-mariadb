@@ -1,6 +1,7 @@
 ---
 # remove test db
 - name: Remove the test database
+  when: mariadb_root_pw != None
   ansible.mysql.mysql_db:
     name: test
     login_user: root
@@ -9,6 +10,12 @@
 
 - when: mariadb_databases | length > 0
   block:
+
+  # assert
+  - name: Assertions for mariadb_databases
+    ansible.builtin.assert:
+      that:
+      - mariadb_root_pw != None
 
   # assert
   - name: Assertions for mariadb_databases

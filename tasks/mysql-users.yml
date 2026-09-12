@@ -1,6 +1,7 @@
 ---
 # remove anonymous
 - name: Remove anonymous database users
+  when: mariadb_root_pw != None
   ansible.mysql.mysql_user:
     name: ""
     host_all: true
@@ -10,6 +11,12 @@
 
 - when: mariadb_users | length > 0
   block:
+
+  # assert
+  - name: Assertions for mariadb_databases
+    ansible.builtin.assert:
+      that:
+      - mariadb_root_pw != None
 
   # assert
   - name: Assertions for mariadb_users
