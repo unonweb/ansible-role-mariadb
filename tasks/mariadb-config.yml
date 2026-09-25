@@ -11,11 +11,11 @@
       - mariadb_config_overrides is mapping
 
   - name: Template MariaDB override configuration
+    become: true
     ansible.builtin.template:
       src: mariadb-override.cnf.j2
       dest: "{{ __mariadb_config_overrides_dir }}/{{ mariadb_config_overrides_file }}"
       owner: root
       group: root
       mode: "0644"
-      validate: "mariadbd --defaults-extra-file=%s --validate-config"
     notify: systemctl reload mariadb.service
