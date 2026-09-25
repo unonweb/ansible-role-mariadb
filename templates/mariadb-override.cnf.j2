@@ -1,5 +1,5 @@
 {# Managed by Ansible. Do not edit manually. #}
-{% for section, options in item.config.items() %}
+{% for section, options in mariadb_config_overrides.items() %}
 [{{ section }}]
 {% for option, value in options.items() %}
 {% if value is sameas true %}

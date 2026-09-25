@@ -1,5 +1,5 @@
 ---
-- tags: [mariadb-config]
+- tags: [role-mariadb-config]
   block:
 
   # assert
@@ -10,14 +10,10 @@
     - item.path is defined
     - item.config is defined
 
-  # template
-  - name: Template override files
-    loop: "{{ mariadb_config_overrides }}"
-      loop_control:
-        label: "{{ item.path }}"
+  - name: Template MariaDB override configuration
     ansible.builtin.template:
       src: mariadb-override.cnf.j2
-      dest: "{{ item.path }}"
+      dest: "{{ __mariadb_config_overrides_dir }}/{{ mariadb_config_overrides_file }}"
       owner: root
       group: root
       mode: "0644"

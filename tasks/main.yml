@@ -10,6 +10,9 @@
   # systemd
   - ansible.builtin.import_tasks: mariadb-systemd.yml
 
+  # config
+  - ansible.builtin.import_tasks: mariadb-config.yml
+
   # databases
   - ansible.builtin.import_tasks: mariadb-databases.yml
 

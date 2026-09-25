@@ -14,6 +14,7 @@ mariadb_root_pw:
 mariadb_config_overrides:
   mysqld:
     datadir: /var/lib/mysql
+mariadb_config_overrides_file: 51-server-ansible-overrides.cnf
 
 mariadb_users: []
 # - name: admin
