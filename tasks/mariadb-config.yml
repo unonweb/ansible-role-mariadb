@@ -3,12 +3,12 @@
   block:
 
   # assert
-  - name: Assertions for mariadb_config_overrides
+  - name: Assertions for mariadb-config
     ansible.builtin.assert:
-    loop: "{{ mariadb_config_overrides }}"
-    that:
-    - item.path is defined
-    - item.config is defined
+      that:
+      - mariadb_config_overrides is not string
+      - mariadb_config_overrides is iterable
+      - mariadb_config_overrides is mapping
 
   - name: Template MariaDB override configuration
     ansible.builtin.template:
