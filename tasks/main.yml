@@ -5,7 +5,7 @@
   block:
 
   # install
-  - ansible.builtin.import_tasks: install.yml
+  - ansible.builtin.import_tasks: mariadb-install.yml
 
   # service
   - name: Ensure MariaDB service is started and enabled
@@ -41,7 +41,7 @@
         state: absent
 
   # mysql databases
-  - ansible.builtin.import_tasks: mysql-databases.yml
+  - ansible.builtin.import_tasks: mariadb-databases.yml
 
   # mysql users
-  - ansible.builtin.import_tasks: mysql-users.yml
+  - ansible.builtin.import_tasks: mariadb-users.yml
