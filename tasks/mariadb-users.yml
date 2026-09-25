@@ -1,51 +1,16 @@
 ---
-- when: mariadb_root_pw != None
-  block:
-
-  # remove anonymous
-  - name: Remove anonymous database users
-    when: mariadb_root_pw != None
-    ansible.mysql.mysql_user:
-      name: ""
-      host_all: true
-      login_user: root
-      login_password: "{{ mariadb_root_pw }}"
-      state: absent
-
-  # root pw
-  - name: Set MariaDB root password
-    ansible.mysql.mysql_user:
-      name: root
-      login_password: "{{ mariadb_root_pw }}"
-      login_user: root
-      login_unix_socket: /var/run/mysqld/mysqld.sock
-      check_implicit_admin: true
-      state: present
-
-  # disallow remote root login
-  - name: Disallow root login remotely
-    loop:
-    - "{{ ansible_facts['hostname'] }}"
-    - "127.0.0.1"
-    - "::1"
-    ansible.mysql.mysql_user:
-      name: root
-      host: "{{ item }}"
-      login_user: root
-      login_password: "{{ mariadb_root_pw }}"
-      state: absent
-
-- when: mariadb_users | length > 0
+- tags: [role-mariadb-users]
+  when: mariadb_users | length > 0
   block:
 
   # assert
-  - name: Assertions for mariadb_databases
+  - name: Assertions for mariadb-users
     ansible.builtin.assert:
       that:
       - mariadb_root_pw != None
 
   # assert
-  - name: Assertions for mariadb_users
+  - name: Assertions for mariadb-users
     loop: "{{ mariadb_users }}"
     ansible.builtin.assert:
       that:

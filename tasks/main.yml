@@ -16,5 +16,8 @@
   # databases
   - ansible.builtin.import_tasks: mariadb-databases.yml
 
+  # root
+  - ansible.builtin.import_tasks: mariadb-users-root.yml
+
   # users
   - ansible.builtin.import_tasks: mariadb-users.yml
