@@ -8,7 +8,10 @@
     login_password: "{{ mariadb_root_pw }}"
     state: absent
 
-- when: mariadb_databases | length > 0
+- when:
+  - mariadb_databases is not string
+  - mariadb_databases is iterable
+  - mariadb_databases | length > 0
   block:
 
   # assert

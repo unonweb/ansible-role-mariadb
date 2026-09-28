@@ -1,6 +1,9 @@
 ---
 - tags: [role-mariadb-users]
-  when: mariadb_users | length > 0
+  when:
+  - mariadb_users is not string
+  - mariadb_users is iterable
+  - mariadb_users | length > 0
   block:
 
   # assert
